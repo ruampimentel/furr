@@ -10,7 +10,7 @@
 #####################################################################
 
 #1. Opens the data set
-load(file="C:/../.././MRMTch2.Rdata")
+load(file="MRMTch2.Rdata")
 
 #2. Snapshot of the data (top few rows of data set)
 names(MRMTch2)
