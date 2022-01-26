@@ -10,13 +10,13 @@
 #####################################################################
 
 #1. Load the data, as revised via Chapter 2's syntax
-load(file="C:/../MRMTch3.Rdata")
+load(file="MRMTch3.Rdata")
 
 #2. Computing the mean, var, and sd easily for one variable at a time
 mean(MRMTch3$MRS)
 var(MRMTch3$MRS)
 sd(MRMTch3$MRS)
-install.packages("sjstats")
+#install.packages("sjstats")
 library(sjstats)
 var_pop(MRMTch3$MRS)
 sd_pop(MRMTch3$MRS)
@@ -24,14 +24,21 @@ sd_pop(MRMTch3$MRS)
 #3 Compute several descriptives one or more variables at a time
 #install.packages("psych")
 library(psych)
-describe(MRMTch3[,c("MRS", "MTS", "SWL")])
+describe(MRMTch3[,c("MRS", "MTS", "SWL")]) 
 
 #4 Plot the shape/curve of a distribution
-hist(MRMTch3$MRS, main ="Histogram of Moral Relativism Scale Scores",
-     breaks=seq(1,5,by=.20), xlab="MRS Score", col="gray95")
+hist(MRMTch3$MRS, 
+     main ="Histogram of Moral Relativism Scale Scores",
+     breaks=seq(1,5,by=.20), 
+     xlab="MRS Score", 
+     col="gray95")
+
 
 #5 Association between two variables - scatterplot
+## make it a bit more pleasand
 plot(jitter(MRMTch3$MRS, 10), jitter(MRMTch3$MTS, 10), pch=20)
+## no jitter
+plot(MRMTch3$MRS, MRMTch3$MTS, pch=20)
 
 #6 Association between two variables - covariance and correlation
 cov(MRMTch3$MRS, MRMTch3$MTS)
