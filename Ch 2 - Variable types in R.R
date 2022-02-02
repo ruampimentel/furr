@@ -10,8 +10,9 @@
 #####################################################################
 
 #1. Opens the data set
-load(file="MRMTch2.Rdata")
+library(haven)
 
+load(file="MRMTch2.Rdata")
 #2. Snapshot of the data (top few rows of data set)
 names(MRMTch2)
 head(MRMTch2)  
@@ -34,9 +35,15 @@ MRMTch2$Gender <- factor(MRMTch2$Gender,
                               levels = c(1,2),
                               labels = c("Male", "Female"))
 str(MRMTch2$Gender)
+
 table(MRMTch2$Gender)
 mean(MRMTch2$Gender)
 
+MRMTch3 %>% summary
+  sjlabelled::as_factor(add.non.labelled = FALSE) %>% 
+  summary
+  
 #8. Saving the revised data set under a new name
 MRMTch3 <- MRMTch2
 save(MRMTch3, file = "MRMTch3.Rdata")
+

@@ -33,7 +33,6 @@ hist(MRMTch3$MRS,
      xlab="MRS Score", 
      col="gray95")
 
-
 #5 Association between two variables - scatterplot
 ## make it a bit more pleasand
 plot(jitter(MRMTch3$MRS, 10), jitter(MRMTch3$MTS, 10), pch=20)
@@ -46,8 +45,8 @@ cor(MRMTch3$MRS, MRMTch3$MTS)
 
 
 #7 Correlation matrix for multiple variables
-cov(MRMTch3[,c("MRS", "MTS", "SWL")])
-cor(MRMTch3[,c("MRS", "MTS", "SWL")])
+cov(MRMTch3[,c("MRS", "MTS", "SWL")]) %>% round(2)
+cor(MRMTch3[,c("MRS", "MTS", "SWL")]) %>% round(2)
 
 
 #8 Computing standard scores from raw scores
