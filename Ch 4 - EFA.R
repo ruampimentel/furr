@@ -54,7 +54,7 @@ print.psych(ex3out, sort=TRUE)
 
 
 #5. Load the data, as revised via Chapter 2's syntax
-load(file="C:/.../MRMTch3.Rdata")
+load(file="MRMTch3.Rdata")
 VSS.scree(MRMTch3[c("MRS_1","MRS_2","MRS_3","MRS_4","MRS_5",
                     "MRS_6","MRS_7","MRS_8","MRS_9","MRS_10",
                     "MTS_1","MTS_2","MTS_3","MTS_4","MTS_5",
@@ -68,3 +68,72 @@ MRMTout <- fa(MRMTch3[c("MRS_1","MRS_2","MRS_3","MRS_4","MRS_5",
 print.psych(MRMTout, sort=TRUE)
 
 citation(package = "psych")
+
+
+
+### ---------------------------------------------------------
+### -------------- 3. Psychometrics--------------------------
+### Not from furr but from another website
+### source: https://eiko-fried.com/creating-basic-psychometric-summaries-in-r/
+### ---------------------------------------------------------
+remotes::install_github('rapporter/pander')
+library("summarytools")
+library("readr")
+library("dplyr")
+library("psych")
+library("qgraph")
+library("bootnet")
+library("OpenMx")
+library("EGAnet")
+library("lavaan")
+
+### A. Descriptives and correlation
+data <- MRMTch3[c("MRS_1","MRS_2","MRS_3","MRS_4","MRS_5",
+          "MRS_6","MRS_7","MRS_8","MRS_9","MRS_10",
+          "MTS_1","MTS_2","MTS_3","MTS_4","MTS_5",
+          "MTS_6","MTS_7","MTS_8","MTS_9","MTS_10")] %>% 
+  na.omit()
+
+view(dfSummary(data))
+
+
+
+cor_mat <- cor(data)
+summary(vechs(cor_mat))
+means_cor <- mean(vechs(cor_mat))
+
+qgraph(cor_mat, 
+       cut=0, 
+       layout="spring", 
+       title=paste("Correlation matrix, mean correlation = ",  
+                   round(means_cor, digits=2), sep=" ")
+       )
+
+### B. Eigenvalue decomposition
+ev <- plot(eigen(cor(data))$values, type="b",
+           ylab="Value", xlab="Number of Eigenvalues")
+
+### C. Number of components and factors
+fac_comp <- fa.parallel(data)
+
+### D. Network and communities
+nw_ega <- EGA(data)
+summary(nw_ega)
+
+### E. CFA
+alpha_scale <- psych::alpha(data); alpha_scale$total$std.alpha
+
+cfa_scale <- 'factor1  =~ MTS_4 + MTS_6 + MTS_7 + MTS_8 + MTS_9 + MTS_10
+              factor2  =~ MRS_6 + MRS_9 + MRS_10
+              factor3  =~ MTS_1 + MTS_2 + MTS_3 + MTS_5
+              factor4  =~ MRS_1 + MRS_2 + MRS_3
+              factor5  =~ MRS_4 + MRS_5 
+              factor6  =~ MRS_7 + MRS_8'
+
+fit <- cfa(cfa_scale, data = data, std.lv=TRUE)
+summary(fit, fit.measures = TRUE)
+
+
+
+
+
