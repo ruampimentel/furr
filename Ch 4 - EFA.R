@@ -76,7 +76,8 @@ citation(package = "psych")
 ### Not from furr but from another website
 ### source: https://eiko-fried.com/creating-basic-psychometric-summaries-in-r/
 ### ---------------------------------------------------------
-remotes::install_github('rapporter/pander')
+#remotes::install_github('rapporter/pander')
+library("pander")
 library("summarytools")
 library("readr")
 library("dplyr")
@@ -87,15 +88,16 @@ library("OpenMx")
 library("EGAnet")
 library("lavaan")
 
+MRMTch3 %>% 
+  names
+
 ### A. Descriptives and correlation
-data <- MRMTch3[c("MRS_1","MRS_2","MRS_3","MRS_4","MRS_5",
-          "MRS_6","MRS_7","MRS_8","MRS_9","MRS_10",
-          "MTS_1","MTS_2","MTS_3","MTS_4","MTS_5",
-          "MTS_6","MTS_7","MTS_8","MTS_9","MTS_10")] %>% 
+
+data <- MRMTch3 %>% 
+  select(MRS_1:SWL_5) %>% 
   na.omit()
 
 view(dfSummary(data))
-
 
 
 cor_mat <- cor(data)
@@ -108,6 +110,20 @@ qgraph(cor_mat,
        title=paste("Correlation matrix, mean correlation = ",  
                    round(means_cor, digits=2), sep=" ")
        )
+
+library(PerformanceAnalytics)
+
+# Easy nice Correlation graph ----
+data %>% 
+  chart.Correlation(histogram=TRUE, pch=19)
+
+library(corrplot)
+
+corrplot(cor_mat, method="circle")
+corrplot(cor_mat, method="color", tl.col="black")
+corrplot(cor_mat, type="upper")
+# correlogram with hclust reordering
+corrplot(cor_mat, type="upper", order="hclust")
 
 ### B. Eigenvalue decomposition
 ev <- plot(eigen(cor(data))$values, type="b",
