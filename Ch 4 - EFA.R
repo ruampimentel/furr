@@ -8,6 +8,7 @@
 #1 Install and activate the psych package
 #install.packages("psych")
 library(psych)
+library(GPArotation)
 
 #2. Main example from Chapter 4 (see Table 4.1 and Figure 4.6)
 ex1matrix <- matrix(c(1.00,  .66,  .54,	 .00,  .00,  .00,		
@@ -35,6 +36,7 @@ ex2matrix <- matrix(c(1.00,  .65,  .45,	 .15,  .22,  .23,
 colnames(ex2matrix) <- c("Item1","Item2","Item3","Item4","Item5","Item6")
 eigen(ex2matrix, only.values = TRUE)
 VSS.scree(ex2matrix)
+
 ex2out <- fa(ex2matrix, fm="pa", nfactors = 2, rotate = "promax")
 print.psych(ex2out, sort=TRUE)
 
@@ -131,6 +133,7 @@ ev <- plot(eigen(cor(data))$values, type="b",
 
 ### C. Number of components and factors
 fac_comp <- fa.parallel(data)
+fa.parallel(data)
 
 ### D. Network and communities
 nw_ega <- EGA(data)
