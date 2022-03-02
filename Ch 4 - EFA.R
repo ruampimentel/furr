@@ -67,11 +67,66 @@ MRMTout <- fa(MRMTch3[c("MRS_1","MRS_2","MRS_3","MRS_4","MRS_5",
                        "MTS_1","MTS_2","MTS_3","MTS_4","MTS_5",
                        "MTS_6","MTS_7","MTS_8","MTS_9","MTS_10")], 
              fm="pa", nfactors = 2, rotate = "promax")
+
 print.psych(MRMTout, sort=TRUE)
 
 citation(package = "psych")
 
 
+
+MRMTch3 %>% names
+
+## By myself based on Greg's class -----
+data_rp <- MRMTch3 %>% select(MRS_1:SWL_5)
+data_rp %>% names
+MRMTout_3 <- fa(data_rp,
+                fm="pa", 
+                nfactors = 3, 
+                rotate = "oblimin")
+MRMTout_3 %>% summary()
+
+
+MRMTout_5 <- fa(data_rp, 
+                fm="pa", 
+                nfactors = 5, 
+                rotate = "oblimin")
+MRMTout_5 %>% summary()
+MRMTout_5$loadings %>% print(sort = T)
+MRMTout_5$Structure %>% print(sort = T)
+
+
+MRMTout_5 %>% print.psych(sort = T)
+
+# PCA Oblimin - Oblique
+MRMTout_5_pca_ob <- principal(data_rp, 
+                       nfactors = 5,
+                       rotate = "oblimin",
+                       scores = TRUE)
+MRMTout_5_pca_ob %>% print.psych(sort = T)
+
+MRMTout_5_pca_ob %>% summary()
+
+MRMTout_5_pca_ob$loadings %>% print(sort = T)
+
+MRMTout_5_pca_ob$Structure %>% print(sort = T)
+MRMTout_5_pca_ob$r.scores %>% 
+  round(2)
+
+## PCA Varimax - Orthogonal
+MRMTout_5_pca_varimax<- principal(data_rp, 
+                              nfactors = 5,
+                              rotate = "varimax")
+
+MRMTout_5_pca_varimax$loadings 
+
+
+MRMTout_3_pca_varimax<- principal(data_rp, 
+                                  nfactors = 3,
+                                  rotate = "varimax")
+
+MRMTout_3_pca_varimax %>%  print.psych(sort = T)
+MRMTout_3_pca_varimax$loadings
+MRMTout_3_pca_varimax$Structure
 
 ### ---------------------------------------------------------
 ### -------------- 3. Psychometrics--------------------------
